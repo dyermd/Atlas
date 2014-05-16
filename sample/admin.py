@@ -1,0 +1,14 @@
+from django.contrib import admin
+from sample.models import Sample
+from sample.models import Sample_Relationship
+
+# Register your models here.
+class Sample_Admin(admin.ModelAdmin):
+    search_fields = ("name", "description", "file", "file_type")
+    list_display = ("name", "description", "file", "file_type")
+admin.site.register(Sample, Sample_Admin)
+
+class Sample_Relationship_Admin(admin.ModelAdmin):
+    search_fields = ("sample1__name", "sample1__description", "sample2__name", "sample2__description", "role1", "role2")
+    list_display = ("sample1", "role1", "sample2", "role2")
+admin.site.register(Sample_Relationship, Sample_Relationship_Admin)

@@ -1,0 +1,81 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Atlas{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "css/bootstrap-responsive.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "css/custom.css" %}" rel="stylesheet" media="screen">
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+  </head>
+  
+  <body>
+
+    <!-- nav bar-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">Atlas</a>
+
+          {% block header %}
+          <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analyses <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">View Results</a></li>
+                    <li><a href="#">Start Analysis</a></li>
+		            <!--
+                    <li class="divider"></li>
+                    <li class="nav-header">Nav header</li>
+		            -->
+                  </ul>
+                </li>
+                <li><a href="compound/">Compounds</a></li>
+                <li><a href="protein/">Proteins</a></li>
+              </ul>
+            </div>
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+
+    <!-- carousel block that will only be used by index page -->
+    <div class="container marketing">
+        <div class="row">
+            {% block carousel %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- rest of the body -->
+    <div class="container marketing">
+        <div class="row" style="padding-top: 50px">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- some more javascript that we will load after everything else so pages load faster -->
+    <script src="{% static "js/jquery-1.11.1.js" %}"></script>
+    <script src="{% static "js/bootstrap-transition.js" %}"></script>
+    <script src="{% static "js/bootstrap-alert.js" %}"></script>
+    <script src="{% static "js/bootstrap-modal.js" %}"></script>
+    <script src="{% static "js/bootstrap-dropdown.js" %}"></script>
+    <script src="{% static "js/bootstrap-scrollspy.js" %}"></script>
+    <script src="{% static "js/bootstrap-tab.js" %}"></script>
+    <script src="{% static "js/bootstrap-tooltip.js" %}"></script>
+    <script src="{% static "js/bootstrap-popover.js" %}"></script>
+    <script src="{% static "js/bootstrap-button.js" %}"></script>
+    <script src="{% static "js/bootstrap-collapse.js" %}"></script>
+    <script src="{% static "js/bootstrap-carousel.js" %}"></script>
+    <script src="{% static "js/bootstrap-typehead.js" %}"></script>
+    <script src="{% static "js/holder.js" %}"></script>
+    <script src="{% static "js/d3.js" %}"></script>
+  </body>
+</html>

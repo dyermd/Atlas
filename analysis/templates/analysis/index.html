@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Proteins{% endblock %}
+
+{% block header %}
+<div class="nav-collapse collapse">
+  <ul class="nav">
+    <li class="dropdown active">
+      <a href="analysis/" class="dropdown-toggle" data-toggle="dropdown">Analyses <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><a href="/analysis/">View Results</a></li>
+        <li><a href="/analysis/">Start Analysis</a></li>
+        <!--
+        <li class="divider"></li>
+        <li class="nav-header">Nav header</li>
+        -->
+      </ul>
+    </li>
+    <li><a href="compound/">Compounds</a></li>
+    <li><a href="protein/">Proteins</a></li>
+  </ul>
+</div>
+{%  endblock %}
+
+{% block body %}
+<div style="padding-top: 20px">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Transposon</li>
+              <li class="active"><a href="#">Compare</a></li>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+
+
+
+        </div><!--/span-->
+      </div><!--/row-->
+</div>
+
+{% endblock %}

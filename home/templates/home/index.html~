@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+
+{% block title %}Atlas 1.0{% endblock %}
+
