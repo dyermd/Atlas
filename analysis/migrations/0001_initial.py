@@ -13,10 +13,11 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('type', self.gf('django.db.models.fields.CharField')(default='Transposon', max_length=30)),
+            ('type', self.gf('django.db.models.fields.CharField')(default='Germline Variant Detection', max_length=30)),
             ('date', self.gf('django.db.models.fields.DateField')()),
             ('parameters', self.gf('django.db.models.fields.TextField')()),
             ('status', self.gf('django.db.models.fields.CharField')(default='Pending', max_length=15)),
+            ('sge_job_number', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'analysis', ['Analysis'])
 
@@ -34,8 +35,9 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'parameters': ('django.db.models.fields.TextField', [], {}),
+            'sge_job_number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'Pending'", 'max_length': '15'}),
-            'type': ('django.db.models.fields.CharField', [], {'default': "'Transposon'", 'max_length': '30'})
+            'type': ('django.db.models.fields.CharField', [], {'default': "'Germline Variant Detection'", 'max_length': '30'})
         }
     }
 

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid" style="padding-top: 25px">
+        <div class="hero-unit">
+            <h1>Launch an Analysis</h1>
+            <p>Select the type of analysis you wish to launch.</p>
+        </div>
+
+        <div class="row-fluid">
+            <h1>Transposon Analyses</h1>
+            <p><a href="{% url 'analysis:single_sample_transposon' %}">Single-sample Report</a></p>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span4">
+
+            </div>
+            <div class="span4">
+
+            </div>
+            <div class="span4">
+
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span4">
+
+            </div>
+            <div class="span4">
+
+            </div>
+            <div class="span4">
+
+            </div>
+        </div>
+    </div><!--/span-->
+</div><!--/.fluid-container-->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            $('#analysis_table').dataTable();
+        });
+    </script>
+{% endblock %}v

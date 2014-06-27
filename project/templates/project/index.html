@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid" style="padding-top: 25px">
+        <div class="hero-unit">
+            <h1>Projects</h1>
+            <p>Projects are a group of samples that have been organized together as part of a study. Here are a list of current projects. Click on the View Details button of any project to get more information on samples and analyses.</p>
+        </div>
+
+        {%  if projects %}
+            <div class="row-fluid">
+            <!-- we want three projects per row-->
+            {% for project in projects %}
+                {% if forloop.counter0|divisibleby:3  %}
+                    </div>
+                    <div class="row-fluid">
+                {% endif %}
+
+                <div class="span4">
+                    <h2>{{ project.name }}</h2>
+                    <p> {{ project.description }}</p>
+                    <p><a class="btn" href="{% url 'project:detail' project.id %}">View details &raquo;</a></p>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <h1>No projects found</h1>
+        {% endif %}
+    </div><!--/span-->
+</div><!--/.fluid-container-->
+{% endblock %}

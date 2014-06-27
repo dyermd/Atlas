@@ -1,8 +1,4 @@
 from django.db import models
-from sample.models import Sample
-from protein.models import Protein
-from compound.models import Compound
-from compound.models import Source
 
 # Create your models here.
 class Analysis(models.Model):
@@ -10,41 +6,36 @@ class Analysis(models.Model):
     RUNNING = "Running"
     COMPLETE = "Complete"
     FAILED = "Failed"
+    QUEUED = "Queued"
 
     STATUS = (
         (PENDING, "Pending"),
         (RUNNING, "Running"),
         (COMPLETE, "Complete"),
         (FAILED, "Failed"),
+        (QUEUED, "Queued")
     )
 
-    COMPINT = "Compound Interaction"
-    COMPSENS = "Compound Sensitivity"
-    TRANS = "Transposon"
-    MUT = "Mutation"
-    EXP = "Expression"
-    ACGH = "Arracy CGH"
-    BAM = "BAM Merging"
-    COV = "Coverage Stats"
+    GERM = "Germline Variant Detection"
+    SOM = "Somatic Variant Detection"
+    QC = "QC"
+    TRAN = "Transposon Screen"
 
     ANALYSIS_TYPE = (
-        (COMPINT, "Compound Interaction"),
-        (COMPSENS, "Compound Sensitivity"),
-        (TRANS, "Transposon"),
-        (MUT, "Mutation"),
-        (EXP, "Expression"),
-        (ACGH, "Array CGH"),
-        (BAM, "BAM Merging"),
-        (COV, "Coverage Stats"),
+        (GERM, "Germline Variant Detection"),
+        (SOM, "Somatic Variant Detection"),
+        (QC, "QC"),
+        (TRAN, "Transposon Screen"),
     )
 
     name = models.CharField(max_length=100)
     description = models.TextField()
-    source = models.ForeignKey(Source)
-    type = models.CharField(max_length=30, choices=ANALYSIS_TYPE, default=TRANS)
+    type = models.CharField(max_length=30, choices=ANALYSIS_TYPE, default=GERM)
     date = models.DateField()
     parameters = models.TextField()
     status = models.CharField(max_length=15, choices=STATUS, default=PENDING)
+    sge_job_number = models.IntegerField(blank=True, null=True)
+
 
     def __unicode__(self):
         return(self.name)
@@ -53,140 +44,3 @@ class Analysis(models.Model):
         verbose_name = "Analysis"
         verbose_name_plural = "Analyses"
 
-class Compound_Interaction_Result(models.Model):
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    compound = models.ForeignKey(Compound)
-    protein = models.ForeignKey(Protein)
-    p_value = models.FloatField()
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.compound.name + " " + self.protein.uniprot_id)
-
-    class Meta:
-        verbose_name = "Compound Interaction Result"
-        verbose_name_plural = "Compound Interaction Results"
-
-class Compound_Sensitivity_Result(models.Model):
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    compound = models.ForeignKey(Compound)
-    ic50 = models.FloatField()
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.compound.name + " " + self.ic50)
-
-    class Meta:
-        verbose_name = "Compound Sensitivity Result"
-        verbose_name_plural = "Compound Sensitivity Results"
-
-class Transposon_Result(models.Model):
-    CODING = "coding"
-    REVERSE = "reverse"
-    EXON = "exon"
-    INTRON = "intron"
-    UPSTREAM = "upstream"
-    DOWNSTREAM = "dowstream"
-
-    STRAND_TYPES = (
-        (CODING, "Coding"),
-        (REVERSE, "Reverse"),
-    )
-    
-    LOCATION_TYPES = (
-        (EXON, "Exon"),
-        (INTRON, "Intron"),
-        (UPSTREAM, "Upstream"),
-        (DOWNSTREAM, "Downstream"),
-    )
-
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    protein = models.ForeignKey(Protein)
-    position = models.IntegerField()
-    coverage = models.IntegerField()
-    frequency = models.FloatField()
-    sequence = models.TextField()
-    strand = models.CharField(max_length=10, choices=STRAND_TYPES, default=CODING)
-    location = models.CharField(max_length=10, choices=LOCATION_TYPES, default=EXON)
-    distance = models.IntegerField()
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.protein.uniprot_id + " " + self.position)
-
-    class Meta:
-        verbose_name = "Transposon Result"
-        verbose_name_plural = "Transposon Results"
-
-class Mutation_Result(models.Model):
-    HET = "Heterozygous"
-    HOM = "Homozygous"
-    REF = "Reference"
-    NOC = "No Call"
-    SNP = "SNP"
-    INDEL = "Indel"
-    CNV = "CNV"
-
-    VARIANT_CATEGORIES = (
-        (HET, "Heterozygous"),
-        (HOM, "Homozygous"),
-    )
-
-    VARIANT_TYPES = (
-        (REF, "Reference"),
-        (NOC, "No Call"),
-        (SNP, "SNP"),
-        (INDEL, "Indel"),
-        (CNV, "CNV"),
-    )
-    
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    protein = models.ForeignKey(Protein)
-    position = models.IntegerField()
-    category = models.CharField(max_length=15, choices=VARIANT_CATEGORIES, default=HOM)
-    type = models.CharField(max_length=15, choices=VARIANT_TYPES, default=REF)
-    total_coverage = models.IntegerField()
-    reference_coverage = models.IntegerField()
-    variant_coverage = models.IntegerField()
-    reference_call = models.CharField(max_length=100)
-    variant_call = models.CharField(max_length=100)
-    frequency = models.FloatField() 
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.protein.uniprot_id + " " + self.position + " " + self.type)
-
-    class Meta:
-        verbose_name = "Mutation Result"
-        verbose_name_plural = "Mutation Results"
-
-class Array_Result(models.Model):
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    protein = models.ForeignKey(Protein)
-    normalized_value = models.FloatField()
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.protein.uniprot_id + " " + self.normalized_value)
-
-    class Meta:
-        verbose_name = "Array Result"
-        verbose_name_plural = "Array Results"
-
-class Coverage_Stat_Result(models.Model):
-    analysis = models.ForeignKey(Analysis)
-    sample = models.ForeignKey(Sample)
-    mapped_reads = models.IntegerField()
-    percent_on_target = models.FloatField()
-    average_coverage = models.FloatField()
-    uniformity_of_coverage = models.FloatField()
-    percent_1x = models.FloatField()
-    percent_20x = models.FloatField()
-    percent_100x = models.FloatField()
-
-    def __unicode__(self):
-        return(self.analysis.name + " " + self.sample.name + " " + self.pecent_20x)
-
-    class Meta:
-        verbose_name = "Coverage Stat Result"
-        verbose_name_plural = "Coverage Stat Results"

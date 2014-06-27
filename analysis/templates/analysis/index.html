@@ -1,46 +1,53 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block title %}Proteins{% endblock %}
-
-{% block header %}
-<div class="nav-collapse collapse">
-  <ul class="nav">
-    <li class="dropdown active">
-      <a href="analysis/" class="dropdown-toggle" data-toggle="dropdown">Analyses <b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li><a href="/analysis/">View Results</a></li>
-        <li><a href="/analysis/">Start Analysis</a></li>
-        <!--
-        <li class="divider"></li>
-        <li class="nav-header">Nav header</li>
-        -->
-      </ul>
-    </li>
-    <li><a href="compound/">Compounds</a></li>
-    <li><a href="protein/">Proteins</a></li>
-  </ul>
+{% block alert %}
+<div id="successAlert" class="row-fluid hide">
+    <div class="alert alert-success">
+        <button class="close" data-dismiss="alert" type="button">x</button>
+        <strong>Congrats!</strong>
+        &nbsp;Analysis was successfully submitted.
+    </div>
 </div>
-{%  endblock %}
+{% endblock %}
+
 
 {% block body %}
-<div style="padding-top: 20px">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Transposon</li>
-              <li class="active"><a href="#">Compare</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
+<div class="container-fluid">
+    <div class="row-fluid" style="padding-top: 25px">
+        <div class="hero-unit">
+            <h1>Analyses</h1>
+            <p>Analyses are pipelines applied to a specific set of input files. Here are a list of current analyses. Click on a analysis to see more information.</p>
+        </div>
+
+        {% if analyses %}
+            <table id="analysis_table" class="table display">
+                <thead><tr><th>Name</th><th>Type</th><th>Date Launched</th><th>Status</th></tr></thead>
+                <tfoot><tr><th>Name</th><th>Type</th><th>Date Launched</th><th>Status</th></tr></tfoot>
+                <tbody>
+                    {% for analysis in analyses %}
+                        <tr><td><a href="{% url 'analysis:detail' analysis.id %}">{{ analysis.name }}</a></td><td>{{ analysis.type }}</td><td>{{ analysis.date }}</td><td>{{ analysis.status }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Currently there are no samples associated with this project.</p>
+        {% endif %}
+    </div><!--/span-->
+</div><!--/.fluid-container-->
 
 
 
-        </div><!--/span-->
-      </div><!--/row-->
-</div>
 
 {% endblock %}
+
+{% block scripts %}
+    <script>
+
+        $(document).ready(function(){
+            $('#analysis_table').dataTable();
+        });
+
+
+    </script>
+{% endblock %}v

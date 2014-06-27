@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid" style="padding-top: 25px">
+        <div class="hero-unit">
+            <h1>Samples</h1>
+            <p>Samples are a biological unit the represent genetic material from a specific individual. Here are a list of current samples. Click on a sample to see more information.</p>
+        </div>
+
+        {%  if samples %}
+            <div class="row-fluid">
+                <table id="sample_table" class="table display">
+                    <thead><th>Name</th><th>Description</th></thead>
+                    <tfoot><th>Name</th><th>Description</th></tfoot>
+                    {% for sample in samples %}
+                        <tr><td><a href="{% url 'sample:detail' sample.id %}">{{ sample.name }}</a></td><td>{{ sample.description }}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            No samples found
+        {% endif %}
+    </div><!--/span-->
+</div><!--/.fluid-container-->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            $('#sample_nav').active = true;
+            $('#sample_table').dataTable();
+        });
+    </script>
+{% endblock %}v

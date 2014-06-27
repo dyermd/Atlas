@@ -1,27 +1,30 @@
 from django.db import models
+from file.models import File
 
 # Create your models here.
 
 class Sample(models.Model):
-    BAM = "BAM"
-    VCF = "VCF"
-
-    FILE_TYPE = (
-        (BAM, "BAM"),
-        (VCF, "VCF"),
-    )
-
     name = models.CharField(max_length=100)
     description = models.TextField()
-    file = models.FileField(upload_to="documents/%Y/%m/%d")
-    file_type = models.CharField(max_length=10, choices=FILE_TYPE, default=BAM)
+    plate_name = models.CharField(max_length=25, blank=True, null=True)
 
     def __unicode__(self):
         return(self.name)
 
     class Meta:
         verbose_name = "Sample"
-        verbose_name_plural = "Samples"
+        verbose_name_plural = "Sample"
+
+class Uses_File(models.Model):
+    sample = models.ForeignKey(Sample)
+    file = models.ForeignKey(File)
+
+    def __unicode__(self):
+        return(self.sample.name + " " + self.file.name)
+
+    class Meta:
+        verbose_name = "Uses File"
+        verbose_name_plural = "Uses Files"
 
 class Sample_Relationship(models.Model):
     TUMOR = "Tumor"
@@ -44,8 +47,8 @@ class Sample_Relationship(models.Model):
 
     sample1 = models.ForeignKey(Sample, related_name="sample1")
     sample2 = models.ForeignKey(Sample, related_name="sample2")
-    role1 = models.CharField(max_length=15, choices=RELATIONSHIP_TYPE, default=NORMAL);
-    role2 = models.CharField(max_length=15, choices=RELATIONSHIP_TYPE, default=NORMAL);
+    role1 = models.CharField(max_length=15, choices=RELATIONSHIP_TYPE, default=NORMAL)
+    role2 = models.CharField(max_length=15, choices=RELATIONSHIP_TYPE, default=NORMAL)
     
     def __unicode__(self):
         return(self.sample1.name + " " + self.role1 + " " + self.sample2.name + " " + self.role2)

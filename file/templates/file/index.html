@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid" style="padding-top: 25px">
+        <div class="hero-unit">
+            <h1>Files</h1>
+            <p>Files are the physical files stored on the server. Here are a list of current files. Click on a file to see more information.</p>
+        </div>
+
+        {% if files %}
+            <table id="file_table" class="table display">
+                <thead><tr><th>Name</th><th>Type</th><th>Path</th></tr></thead>
+                <tfoot><tr><th>Name</th><th>Type</th><th>Path</th></tr></tfoot>
+                <tbody>
+                    {% for file in files %}
+                        <tr><td><a href="{% url 'file:detail' file.id %}">{{ file.name }}</a></td><td>{{ file.file_type }}</td><td>{{ file.file_path }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Currently there are no files associated with this sample.</p>
+        {% endif %}
+    </div><!--/span-->
+</div><!--/.fluid-container-->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            $('#file_table').dataTable();
+        });
+    </script>
+{% endblock %}v
